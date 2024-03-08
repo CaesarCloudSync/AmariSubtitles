@@ -37,13 +37,17 @@ class AmariSubtitles:
         return english_subs
     def get_available_episodes(self,imdb_id,search=0):
         return len(self.fetch_subs(imdb_id,search))
-    def get_file_id(self,sub,episode):
+    def get_file_id(self,sub,season,episode):
         num_available = len(sub)
-        try:
-            return sub[episode]["attributes"]["files"][0]["file_id"]
-        except IndexError as iex:
+        
+        
+        result = list(filter(lambda x: x["attributes"]["feature_details"]["episode_number"] == episode and x["attributes"]["feature_details"]["season_number"] == season,sub))
+        if len(result) == 0:
+            raise SubtitleEpisodeDoesNotExist(f"Season or Episode does not exist. Please Check number of available subs is {num_available}.")
+        return result[0]["attributes"]["files"][0]["file_id"]
+
             
-            raise SubtitleEpisodeDoesNotExist(f"Episode does not exist. Please Check number of available subs is {num_available}.")
+            
     def get_sub_url(self,file_id):
         url = "https://api.opensubtitles.com/api/v1/download"
 
@@ -63,9 +67,9 @@ class AmariSubtitles:
 
 
      
-    def search_and_get_url(self,imdb_id,episode):
+    def search_and_get_url(self,imdb_id,season,episode):
         english_subs = self.fetch_subs(imdb_id)
-        file_id = self.get_file_id(english_subs,episode)
+        file_id = self.get_file_id(english_subs,season,episode)
         filename,link = self.get_sub_url(file_id)
         return filename,link
 

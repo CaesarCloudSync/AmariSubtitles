@@ -7,7 +7,7 @@ uri = "http://127.0.0.1:8080" #"https://blacktechdivisionreward-hrjw5cc7pa-uc.a.
 
 class SubUnittest(unittest.TestCase):
     def test_fetch_subtitle(self):
-        response = requests.get(f"{uri}/api/fetchsubtitle",params={"imdb_id":"tt15237152","episode":1})
+        response = requests.get(f"{uri}/api/fetchsubtitle",params={"imdb_id":"tt9335498","season":3,"episode":2})
         print(response.json())
         self.assertEqual(response.json().get("error"),None)
     def test_search_subtitle(self):
