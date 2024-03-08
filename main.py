@@ -23,6 +23,7 @@ async def index():
 @app.get("/api/fetchsubtitle")
 async def fetchsubtilte(imdb_id:str,episode:int):
     try:
+        episode = episode + 1
         filename,link = amarisub.search_and_get_url(imdb_id,episode)
         return {"filename":filename,"link":link}
     except Exception as ex:
