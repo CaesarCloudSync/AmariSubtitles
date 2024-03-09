@@ -30,6 +30,13 @@ async def fetchsubtitle(imdb_id:str,season:int,episode:int):
         return {"filename":filename,"link":link}
     except Exception as ex:
         return {"error":str(ex),"errortype":str(type(ex))}
+@app.get("/api/fetchsubtitlemovie")
+async def fetchsubtitlemovie(imdb_id:str):
+    try:
+        filename,link = amarisub.search_and_get_url_movie(imdb_id)
+        return {"filename":filename,"link":link}
+    except Exception as ex:
+        return {"error":str(ex),"errortype":str(type(ex))}
 
 @app.get("/api/searchsubtitles")
 async def searchsubtitles(query:str):
