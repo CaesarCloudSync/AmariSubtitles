@@ -28,7 +28,7 @@ async def fetchsubtitle(imdb_id:str,season:int,episode:int):
     try:
         filename,link = amarisub.search_and_get_url(imdb_id,season,episode)
         subsrt = requests.get(link).content.decode("utf-8")
-        subsrt = "WEBVTT\n\n" + subsrt
+        subsrt = "WEBVTT\n\n" + subsrt.replace(",",".",100000)
         print(subsrt)
         headers = {'Content-Disposition': f'inline; filename="{filename}"'}
         return Response(content=subsrt,media_type="text/plain",headers=headers)
