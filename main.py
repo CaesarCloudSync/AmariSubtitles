@@ -1,7 +1,10 @@
+import io
+import requests
 import uvicorn
 from fastapi import FastAPI
 from typing import Dict,List,Any,Union
 from AmariSubtitles import AmariSubtitles
+from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -24,7 +27,9 @@ async def index():
 async def fetchsubtitle(imdb_id:str,season:int,episode:int):
     try:
         filename,link = amarisub.search_and_get_url(imdb_id,season,episode)
-        return {"filename":filename,"link":link}
+        subsrt = requests.get(link).content
+        headers = {'Content-Disposition': f'inline; filename="{filename}"'}
+        return Response(content=subsrt,media_type="application/x-subrip",headers=headers)
     except Exception as ex:
         return {"error":str(ex),"errortype":str(type(ex))}
 
