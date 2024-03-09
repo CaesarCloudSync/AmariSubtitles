@@ -31,7 +31,7 @@ async def fetchsubtitle(imdb_id:str,season:int,episode:int):
         subsrt = "WEBVTT\n\n" + subsrt.replace(",",".",100000)
         #print(subsrt)
         #headers = {'Content-Disposition': f'inline; filename="{filename}"'}
-        return Response(content=subsrt,media_type="text/plain",headers=headers)
+        return Response(content=subsrt,media_type="text/plain")
     except Exception as ex:
         return {"error":str(ex),"errortype":str(type(ex))}
 
